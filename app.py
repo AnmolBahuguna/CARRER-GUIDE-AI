@@ -26,7 +26,6 @@ progress_storage = {}
 scholarships_cache = {}
 internships_cache = {}
 jobs_cache = {}
-chat_history = {}  # Store chat history per user session
 feedback_storage = []  # Store feedback submissions
 
 # ==================== COLLEGE DATABASE ====================
@@ -737,167 +736,93 @@ def user_stats():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """Career guidance chatbot endpoint using OpenRouter API"""
+    """Career guidance chatbot endpoint using OpenRouter API (stateless)."""
     try:
-        data = request.get_json()
-        user_message = data.get('message', '').strip()
+        data = request.get_json() or {}
+        user_message = (data.get('message') or '').strip()
         clear_history = data.get('clear_history', False)
-        
-        # Get or create session ID for chat history
-        session_id = session.get('user_email', 'anonymous') + '_chat'
-        
-        # Clear history if requested (allow empty message for this)
-        if clear_history:
-            if session_id in chat_history:
-                del chat_history[session_id]
+
+        # If frontend asks to clear history, just acknowledge (no server-side history now)
+        if clear_history and not user_message:
             return jsonify({'message': 'Chat history cleared', 'success': True}), 200
-        
-        # Validate message if not clearing history
+
         if not user_message:
-            return jsonify({'error': 'Message cannot be empty'}), 400
-        
-        # Get existing chat history
-        if session_id not in chat_history:
-            chat_history[session_id] = []
-        
-        # System prompt for career guidance counselor
-        system_prompt = """You are a professional career guidance counselor assistant with expertise in helping students and professionals navigate their career paths. Your role is to provide thoughtful, personalized, and actionable career advice.
+            return jsonify({'error': 'Message cannot be empty', 'success': False}), 400
 
-Your Capabilities:
+        api_key = os.getenv('OPENROUTER_API_KEY')
+        if not api_key:
+            return jsonify({'error': 'API key not configured on server', 'success': False}), 500
 
-- Career path exploration and recommendations based on interests, skills, and market demand
-- Educational guidance including courses, degrees, certifications, and learning platforms
-- Resume building, cover letter writing, and interview preparation strategies
-- Skill development recommendations aligned with industry trends
-- Industry insights, job market analysis, and salary expectations
-- Job search strategies, networking tips, and LinkedIn optimization
-- Career transition advice and upskilling guidance
-- Work-life balance and professional development counseling
+        system_prompt = (
+            "You are a professional career guidance counselor assistant for Indian students and "
+            "professionals. Give clear, practical, step-by-step advice about careers, skills, "
+            "education paths, colleges, and job search. Keep answers structured and easy to follow."
+        )
 
-Communication Style:
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message},
+        ]
 
-- Be warm, supportive, encouraging, and empathetic
-- Ask 1-2 clarifying questions to understand the user's background, goals, and constraints
-- Provide specific, actionable advice with clear steps rather than vague suggestions
-- Use real-world examples and scenarios to illustrate points
-- Be honest about challenges while maintaining an optimistic and empowering tone
-
-Guidelines for Responses:
-
-1. Personalization: Always gather context about the user's education level, work experience, interests, strengths, and career goals before giving detailed advice.
-
-2. Structure Your Advice:
-   - Acknowledge their situation with empathy
-   - Provide 3-5 specific, actionable recommendations
-   - Break down complex advice into numbered steps
-   - Suggest relevant resources (courses, platforms, tools)
-   - End with encouragement and invite follow-up questions
-
-3. When Discussing Career Options:
-   - Explore 2-3 suitable career paths based on their profile
-   - Explain required qualifications, skills, and typical education paths
-   - Discuss career progression, salary ranges, and job market outlook
-   - Mention emerging opportunities in related fields
-
-4. When Providing Educational Guidance:
-   - Recommend specific courses, certifications, or degree programs
-   - Suggest platforms: Coursera, edX, Udemy, LinkedIn Learning, freeCodeCamp
-   - Discuss ROI and time investment for different learning paths
-   - Mention free and paid alternatives
-
-5. For Job Search Help:
-   - Give concrete resume and cover letter tips tailored to their target role
-   - Provide interview preparation strategies with sample questions
-   - Suggest job boards: LinkedIn, Indeed, Glassdoor, Naukri, AngelList
-   - Offer networking strategies and LinkedIn profile optimization tips
-
-6. For Career Transitions:
-   - Identify and highlight transferable skills
-   - Create a realistic transition timeline with milestones
-   - Suggest bridge roles or freelance opportunities
-   - Address common concerns about age, experience gaps, or industry switches
-
-Important Boundaries:
-
-- Don't guarantee job placements, specific salaries, or career outcomes
-- Don't provide legal, financial, or medical advice
-- If uncertain about specific information, acknowledge it and suggest reliable resources
-- Be realistic about challenges but never discourage users from pursuing their goals
-
-Response Format Example:
-
-"I understand you're [acknowledge their situation]. That's a [validate their feelings/choice]. 
-
-Based on what you've shared, here are my recommendations:
-
-1. [Specific action item with details]
-2. [Specific action item with details]
-3. [Specific action item with details]
-
-[Relevant resource or platform suggestions]
-
-[Encouraging closing statement]. Feel free to ask if you'd like more details on any of these points or have other questions!"
-
-Your ultimate goal is to empower users with knowledge, confidence, and concrete steps to achieve their career aspirations. Always be supportive, practical, and focused on actionable guidance."""
-        
-        # Build messages array with system prompt, history, and current message
-        messages = [{'role': 'system', 'content': system_prompt}]
-        
-        # Add conversation history (limit to last 10 exchanges to avoid token limits)
-        history = chat_history[session_id][-10:] if len(chat_history[session_id]) > 10 else chat_history[session_id]
-        messages.extend(history)
-        
-        # Add current user message
-        messages.append({'role': 'user', 'content': user_message})
-        
-        # OpenRouter API configuration
-        api_key = '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'
         api_url = 'https://openrouter.ai/api/v1/chat/completions'
-        
-        # Prepare the API request
+        site_url = os.getenv('OPENROUTER_SITE_URL', 'http://localhost:5000')
+        app_title = os.getenv('OPENROUTER_APP_TITLE', 'SmartCareer')
+
         headers = {
             'Authorization': f'Bearer {api_key}',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'HTTP-Referer': site_url,
+            'X-Title': app_title,
         }
-        
+
         payload = {
             'model': 'openai/gpt-4o-mini',
             'messages': messages,
             'temperature': 0.7,
-            'max_tokens': 1000
+            'max_tokens': 800,
         }
-        
-        # Make the API request
+
+        # Log the request for debugging
+        print(f"Sending request to OpenRouter API with message: {user_message}")
+        print(f"Using API key: {api_key[:10]}...")  # Log first 10 chars of API key for verification
+
         response = requests.post(api_url, headers=headers, json=payload, timeout=30)
         
-        if response.status_code == 200:
-            result = response.json()
-            assistant_message = result.get('choices', [{}])[0].get('message', {}).get('content', 'I apologize, but I encountered an error processing your request.')
-            
-            # Store in chat history
-            chat_history[session_id].append({'role': 'user', 'content': user_message})
-            chat_history[session_id].append({'role': 'assistant', 'content': assistant_message})
-            
-            # Limit history size (keep last 20 messages)
-            if len(chat_history[session_id]) > 20:
-                chat_history[session_id] = chat_history[session_id][-20:]
-            
+        print(f"API Response Status Code: {response.status_code}")
+        print(f"API Response Headers: {dict(response.headers)}")
+
+        if response.status_code != 200:
+            error_text = response.text
+            print(f"API Error Response: {error_text}")
             return jsonify({
-                'message': assistant_message,
-                'success': True
-            }), 200
-        else:
-            error_detail = response.text
-            return jsonify({
-                'error': f'API request failed: {error_detail}',
-                'success': False
+                'error': f'API request failed with status {response.status_code}: {error_text}',
+                'success': False,
             }), response.status_code
-    
+
+        result = response.json()
+        print(f"API Success Response: {result}")
+        
+        # Check if we have a valid response
+        if 'choices' not in result or not result['choices']:
+            return jsonify({
+                'error': 'API returned empty response',
+                'success': False,
+            }), 500
+            
+        choice = result['choices'][0]
+        assistant_message = choice.get('message', {}).get(
+            'content',
+            'Sorry, I could not generate a response right now.'
+        )
+
+        return jsonify({'message': assistant_message, 'success': True}), 200
+
     except requests.exceptions.Timeout:
         return jsonify({'error': 'Request timed out. Please try again.', 'success': False}), 504
     except requests.exceptions.RequestException as e:
         return jsonify({'error': f'Network error: {str(e)}', 'success': False}), 500
     except Exception as e:
+        print(f"Unexpected error in chat endpoint: {str(e)}")
         return jsonify({'error': f'An error occurred: {str(e)}', 'success': False}), 500
 
 @app.route('/api/submit_feedback', methods=['POST'])
@@ -934,16 +859,47 @@ def submit_feedback():
             'status': 'new'
         }
         
-        # Store feedback
+        # Store feedback locally
         feedback_storage.append(feedback_entry)
+        
+        # Send to Web3 Forms API
+        web3_api_key = os.getenv('WEB3FORMS_ACCESS_KEY')
+        web3_url = 'https://api.web3forms.com/submit'
+        if not web3_api_key:
+            print("WEB3FORMS_ACCESS_KEY is not configured; skipping external Web3 submission")
+            web3_status = 'skipped'
+        else:
+            web3_status = 'pending'
+        web3_payload = {
+            'access_key': web3_api_key,
+            'name': data.get('name'),
+            'email': data.get('email'),
+            'subject': data.get('subject'),
+            'message': data.get('message'),
+            'feedback_type': data.get('feedback_type'),
+            'rating': data.get('rating', 0),
+            'from': 'SmartCareer Feedback Form',
+        }
+        
+        if web3_api_key:
+            print(f"Submitting feedback to Web3 Forms API: {web3_payload['name']} <{web3_payload['email']}>")
+            web3_response = requests.post(web3_url, json=web3_payload, timeout=15)
+            print(f"Web3 Forms API response status: {web3_response.status_code}")
+            if web3_response.status_code != 200:
+                print(f"Web3 Forms API error response: {web3_response.text}")
+                web3_status = 'failed'
+            else:
+                web3_status = 'submitted'
         
         return jsonify({
             'success': True,
             'message': 'Feedback submitted successfully',
-            'feedback_id': feedback_entry['id']
+            'feedback_id': feedback_entry['id'],
+            'web3_status': web3_status
         }), 200
     
     except Exception as e:
+        print(f"Error in submit_feedback: {str(e)}")
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500
 
 # ==================== ERROR HANDLERS ====================

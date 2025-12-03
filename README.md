@@ -10,7 +10,6 @@ An intelligent, production-ready web application that helps students and profess
 SmartCareer is a comprehensive career guidance platform designed specifically for the Indian education and job market. It features:
 
 - **AI-Powered Career Assessment** - 15-question intelligent quiz that analyzes interests, skills, and personality
-- **AI Career Chatbot** - Interactive chatbot powered by OpenRouter API for personalized career guidance
 - **Career Growth Roadmap** - Interactive 3D timeline showing career progression from entry-level to leadership
 - **College Database** - 100+ Indian colleges including all IITs, NITs, IIITs, AIIMS, and top private universities
 - **Career Insights** - Real salary data, market trends, and skill demand analysis for 15+ top skills
@@ -20,13 +19,6 @@ SmartCareer is a comprehensive career guidance platform designed specifically fo
 - **3D Effects & Animations** - Modern scroll-triggered animations and interactive 3D effects
 
 ## ✨ Key Features
-
-### 🤖 AI Career Chatbot
-- **OpenRouter API Integration** - Powered by GPT-4o-mini for intelligent responses
-- **Conversation History** - Maintains context across multiple messages
-- **Personalized Guidance** - Career paths, skills, education, resumes, and job search strategies
-- **Quick Questions** - Pre-filled questions for common career queries
-- **Responsive Design** - Fully optimized for mobile, tablet, and desktop
 
 ### 🗺️ Career Growth Roadmap
 - **5 Career Stages** - Entry Level → Mid-Level → Senior → Lead → Manager
@@ -78,9 +70,6 @@ SmartCareer is a comprehensive career guidance platform designed specifically fo
 - **python-dotenv 1.0.0** - Environment variable management
 - **requests 2.31.0** - HTTP library for API calls
 
-### External APIs
-- **OpenRouter API** - AI chatbot integration (GPT-4o-mini)
-
 ### Storage
 - **In-Memory Storage** - No database required for basic functionality
 - **Session Management** - Flask secure sessions
@@ -113,7 +102,6 @@ smartcareer/
     ├── results.html               # Quiz results with Chart.js visualizations
     ├── dashboard.html             # Personalized user dashboard with statistics
     ├── roadmap.html               # 3D Career Growth Roadmap with timeline
-    ├── chatbot.html               # AI Career Guidance Chatbot interface
     ├── resume_builder.html        # Professional resume creation tool
     ├── college_finder.html        # Searchable database of 100+ colleges
     ├── scholarships.html          # Government & private scholarship listings
@@ -129,7 +117,6 @@ smartcareer/
 - Python 3.8 or higher
 - pip (Python package manager)
 - Modern web browser (Chrome, Firefox, Safari, Edge)
-- OpenRouter API key (for chatbot feature)
 
 ### Step 1: Clone or Download the Project
 
@@ -173,7 +160,6 @@ touch .env
 FLASK_SECRET_KEY=your_secret_key_here_change_in_production
 FLASK_DEBUG=True
 FLASK_ENV=development
-OPENROUTER_API_KEY=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
 ```
 
 **Important**: Change `FLASK_SECRET_KEY` to a secure random string in production!
@@ -190,29 +176,7 @@ Open your browser and navigate to the URL to see the application.
 
 ## 📊 Core Features Implementation
 
-### 1. AI Career Chatbot 🤖
-
-**Features:**
-- Real-time conversation with AI career counselor
-- Maintains conversation history for context
-- Personalized career guidance based on user queries
-- Quick question buttons for common topics
-- Clear chat functionality
-- Responsive design for all devices
-
-**API Integration:**
-- Uses OpenRouter API with GPT-4o-mini model
-- System prompt optimized for career guidance
-- Error handling for network issues
-- Timeout protection (30 seconds)
-
-**Usage:**
-1. Navigate to `/chatbot` or click "Chatbot" in navigation
-2. Type your career-related question
-3. Get instant, personalized advice
-4. Continue conversation with follow-up questions
-
-### 2. Career Growth Roadmap 🗺️
+### 1. Career Growth Roadmap 🗺️
 
 **5 Career Stages:**
 1. **Junior/Entry Level** (0-2 years) - ₹5-12 LPA
@@ -236,7 +200,7 @@ Open your browser and navigate to the URL to see the application.
 - Floating icon animations
 - Staggered appearance (150ms delay)
 
-### 3. Career Assessment Quiz 📝
+### 2. Career Assessment Quiz 📝
 
 **15 Questions Covering:**
 - Type of work preferences
@@ -258,7 +222,7 @@ Open your browser and navigate to the URL to see the application.
 - Required skills
 - Top hiring companies
 
-### 4. Comprehensive College Database 🏫
+### 3. Comprehensive College Database 🏫
 
 **100+ Colleges:**
 - **IITs** (23 institutes) - Rank 1-23 with placement data
@@ -276,7 +240,7 @@ Open your browser and navigate to the URL to see the application.
 - NIRF rankings
 - Entrance exam requirements
 
-### 5. Skills & Career Insights 📈
+### 4. Skills & Career Insights 📈
 
 **15+ Top Skills:**
 1. Python Programming - ₹5-30 LPA, 97% demand
@@ -299,7 +263,7 @@ Open your browser and navigate to the URL to see the application.
 - Difficulty level
 - Industry sectors
 
-### 6. Resume Builder 📄
+### 5. Resume Builder 📄
 
 **Features:**
 - Form-based creation
@@ -309,7 +273,7 @@ Open your browser and navigate to the URL to see the application.
 - Print-friendly format
 - Sections: Personal info, Education, Experience, Skills, Projects
 
-### 7. Learning Roadmaps 📚
+### 6. Learning Roadmaps 📚
 
 **10+ Career Paths:**
 1. Software Developer (4 phases)
@@ -331,7 +295,7 @@ Open your browser and navigate to the URL to see the application.
 - Technology stack
 - Resource recommendations
 
-### 8. Scholarship Database 💰
+### 7. Scholarship Database 💰
 
 **Categories:**
 - Government Scholarships (AICTE, Ministry of Education)
@@ -395,7 +359,6 @@ Open your browser and navigate to the URL to see the application.
 - `GET /dashboard` - User dashboard (protected)
 - `GET /roadmap` - General career roadmap
 - `GET /roadmap/<career>` - Career-specific roadmap
-- `GET /chatbot` - AI Career Chatbot
 - `GET /resume_builder` - Resume creation tool
 - `GET /college_finder` - College database
 - `GET /scholarships` - Scholarship listings
@@ -405,7 +368,6 @@ Open your browser and navigate to the URL to see the application.
 
 ### API Endpoints
 - `POST /api/submit_quiz` - Submit quiz answers
-- `POST /api/chat` - Chat with AI career counselor
 - `POST /api/build_resume` - Generate resume HTML
 - `GET /api/colleges?type=all|iits|nits|private` - College database
 - `GET /api/skills` - Skills database
@@ -433,8 +395,7 @@ Open your browser and navigate to the URL to see the application.
 - **Environment Variables**: Sensitive data stored in `.env`
 - **CORS Protection**: Flask-CORS for cross-origin requests
 - **Input Validation**: Client and server-side validation
-- **XSS Protection**: HTML escaping in chatbot messages
-- **API Key Security**: OpenRouter API key stored securely
+- **XSS Protection**: HTML escaping for user inputs where applicable
 
 ## 📊 Data Structure (In-Memory)
 
