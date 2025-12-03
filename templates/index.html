@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}SmartCareer - AI-Powered Career Guidance{% endblock %}
+
+{% block content %}
+<!-- Scroll Progress Bar -->
+<div data-scroll-progress style="width: 0%;"></div>
+
+<!-- Hero Section -->
+<section class="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 py-12 sm:py-16 md:py-20 lg:py-24 hero-3d">
+    <!-- Decorative Elements with Parallax -->
+    <div class="absolute top-0 left-0 w-48 h-48 sm:w-72 sm:h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" data-parallax="0.3" data-float="4"></div>
+    <div class="absolute top-0 right-0 w-48 h-48 sm:w-72 sm:h-72 bg-teal-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" data-parallax="0.5" data-float="5"></div>
+    <div class="absolute -bottom-8 left-20 w-48 h-48 sm:w-72 sm:h-72 bg-cyan-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" data-parallax="0.4" data-float="4.5"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center hero-content-3d">
+            <!-- Content -->
+            <div data-animate="fade-up" data-delay="0">
+                <div class="inline-block mb-4">
+                    <span class="px-3 py-1.5 sm:px-4 sm:py-2 bg-emerald-100 text-emerald-700 rounded-full text-xs sm:text-sm font-semibold pulse">
+                        🚀 AI-Powered Career Platform
+                    </span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
+                    <span class="text-gray-900">Launch Your</span>
+                    <span class="block bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent gradient-animated">Dream Career</span>
+                    <span class="text-gray-900">Today</span>
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto">
+                    Discover your perfect career path with AI-powered assessments, explore 100+ top colleges, and get personalized guidance from expert mentors.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <a href="/quiz" class="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-xl hover:from-emerald-600 hover:to-teal-700 transition transform hover:scale-105 shadow-xl font-semibold flex items-center justify-center gap-2 text-sm sm:text-base ripple btn-3d" data-magnetic>
+                        <i class="fas fa-rocket"></i>
+                        <span>Start Career Quiz</span>
+                        <i class="fas fa-arrow-right group-hover:translate-x-1 transition"></i>
+                    </a>
+                </div>
+                
+                <!-- Trust Indicators -->
+                <div class="mt-8 sm:mt-12 flex flex-col sm:flex-row flex-wrap items-center gap-4 sm:gap-8 justify-center">
+                    <div class="flex items-center gap-2">
+                        <div class="flex -space-x-2">
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 border-2 border-white pulse"></div>
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 border-2 border-white pulse" style="animation-delay: 0.2s;"></div>
+                            <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 border-2 border-white pulse" style="animation-delay: 0.4s;"></div>
+                        </div>
+                        <span class="text-xs sm:text-sm text-gray-600 font-medium">10,000+ Students Trust Us</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-xs sm:text-sm text-gray-600 font-medium">4.9/5 Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-12 sm:py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+            <div class="text-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 mx-auto mb-3 sm:mb-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition duration-300 shadow-lg group-hover:shadow-2xl">
+                    <i class="fas fa-university text-white text-lg sm:text-xl md:text-2xl rotate-on-hover"></i>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-1 sm:mb-2 counter" data-target="100">0</div>
+                <p class="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Top Indian Colleges</p>
+            </div>
+            <div class="text-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 mx-auto mb-3 sm:mb-4 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition duration-300 shadow-lg group-hover:shadow-2xl">
+                    <i class="fas fa-briefcase text-white text-lg sm:text-xl md:text-2xl rotate-on-hover"></i>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-1 sm:mb-2 counter" data-target="15">0</div>
+                <p class="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Career Paths</p>
+            </div>
+            <div class="text-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 mx-auto mb-3 sm:mb-4 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition duration-300 shadow-lg group-hover:shadow-2xl">
+                    <i class="fas fa-code text-white text-lg sm:text-xl md:text-2xl rotate-on-hover"></i>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-1 sm:mb-2 counter" data-target="20">0</div>
+                <p class="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Tech Skills</p>
+            </div>
+            <div class="text-center group cursor-pointer transform transition-all duration-300 hover:scale-105">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 mx-auto mb-3 sm:mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition duration-300 shadow-lg group-hover:shadow-2xl">
+                    <i class="fas fa-robot text-white text-lg sm:text-xl md:text-2xl rotate-on-hover"></i>
+                </div>
+                <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-1 sm:mb-2">AI</div>
+                <p class="text-xs sm:text-sm md:text-base text-gray-600 font-medium">Powered Platform</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Animated Counter Script -->
+<script>
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+    const speed = 10; // Even faster animation speed for better performance
+    
+    // Use Intersection Observer with better performance settings
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = +counter.getAttribute('data-target');
+                const increment = target / speed;
+                
+                let count = 0;
+                const updateCount = () => {
+                    count += increment;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count);
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        counter.innerText = target + '+';
+                    }
+                };
+                
+                updateCount();
+                observer.unobserve(counter);
+            }
+        });
+    }, { 
+        threshold: 0.5,
+        rootMargin: '0px 0px -50px 0px' // Trigger 50px before element is visible
+    });
+    
+    counters.forEach(counter => observer.observe(counter));
+}
+
+// Run counter animation when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateCounters);
+} else {
+    animateCounters();
+}
+</script>
+
+<!-- Features Section -->
+<section class="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 sm:mb-12 lg:mb-16" data-animate="fade-up" data-delay="0">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 px-4">Everything You Need to Succeed</h2>
+            <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">Comprehensive tools and resources to guide your career journey</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8" data-stagger="100">
+            <!-- Feature 1 -->
+            <div class="group bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition border-2 border-transparent hover:border-emerald-200 card-entrance hover-lift feature-card-3d" data-aos="fade-up" data-aos-delay="100" data-3d-card data-stagger-item>
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition">
+                    <i class="fas fa-brain text-white text-lg sm:text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">AI Career Assessment</h3>
+                <p class="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-5 md:mb-6">Intelligent 15-question quiz analyzing your interests, skills, and personality to recommend perfect career matches.</p>
+                <a href="/quiz" class="inline-flex items-center justify-center w-full px-4 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg hover:from-emerald-600 hover:to-teal-700 transition transform hover:scale-105 shadow-md font-semibold text-sm sm:text-base ripple">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Start Quiz
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="group bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition border-2 border-transparent hover:border-teal-200 card-entrance hover-lift feature-card-3d" data-aos="fade-up" data-aos-delay="200" data-3d-card data-stagger-item>
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition">
+                    <i class="fas fa-graduation-cap text-white text-lg sm:text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">College Finder</h3>
+                <p class="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-5 md:mb-6">Searchable database of 100+ Indian colleges including all IITs, NITs, IIITs, AIIMS with real placement data.</p>
+                <a href="/college_finder" class="inline-flex items-center justify-center w-full px-4 py-2.5 sm:py-3 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg hover:from-teal-600 hover:to-cyan-700 transition transform hover:scale-105 shadow-md font-semibold text-sm sm:text-base ripple">
+                    <i class="fas fa-university mr-2"></i>
+                    Find Colleges
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 3 - Career Chatbot -->
+            <div class="group bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition border-2 border-transparent hover:border-purple-200 card-entrance hover-lift feature-card-3d" data-aos="fade-up" data-aos-delay="300" data-3d-card data-stagger-item>
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition">
+                    <i class="fas fa-comments text-white text-lg sm:text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">AI Career Chatbot</h3>
+                <p class="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-5 md:mb-6">Get instant, personalized career guidance from our AI assistant. Ask about career paths, skills, education, resumes, and job search strategies.</p>
+                <a href="/chatbot" class="inline-flex items-center justify-center w-full px-4 py-2.5 sm:py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition transform hover:scale-105 shadow-md font-semibold text-sm sm:text-base ripple">
+                    <i class="fas fa-comments mr-2"></i>
+                    Chat Now
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="group bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition border-2 border-transparent hover:border-orange-200 card-entrance hover-lift feature-card-3d" data-aos="fade-up" data-aos-delay="400" data-3d-card data-stagger-item>
+                <div class="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-orange-600"><i class="fas fa-road"></i></div>
+                <h3 class="text-lg sm:text-xl font-bold mb-2 sm:mb-3 md:mb-4">Career Roadmaps</h3>
+                <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-5 md:mb-6">Step-by-step learning paths for 10+ career trajectories with recommended skills, courses, and timelines.</p>
+                <a href="/roadmap" class="inline-flex items-center justify-center w-full px-4 py-2.5 sm:py-3 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-lg hover:from-orange-600 hover:to-red-700 transition transform hover:scale-105 shadow-md font-semibold text-sm sm:text-base ripple">
+                    <i class="fas fa-route mr-2"></i>
+                    View Roadmaps
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="group bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition border-2 border-transparent hover:border-red-200 card-entrance hover-lift feature-card-3d" data-aos="fade-up" data-aos-delay="500" data-3d-card data-stagger-item>
+                <div class="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-red-600"><i class="fas fa-file-alt"></i></div>
+                <h3 class="text-lg sm:text-xl font-bold mb-2 sm:mb-3 md:mb-4">Resume Builder</h3>
+                <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-5 md:mb-6">Professional resume creation tool with live preview, modern templates, and instant download. See changes in real-time as you build.</p>
+                <a href="/resume_builder" class="inline-flex items-center justify-center w-full px-4 py-2.5 sm:py-3 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg hover:from-red-600 hover:to-pink-700 transition transform hover:scale-105 shadow-md font-semibold text-sm sm:text-base ripple">
+                    <i class="fas fa-file-download mr-2"></i>
+                    Build Resume
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="group bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition border-2 border-transparent hover:border-indigo-200 card-entrance hover-lift feature-card-3d" data-aos="fade-up" data-aos-delay="600" data-3d-card data-stagger-item>
+                <div class="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 text-indigo-600"><i class="fas fa-chart-line"></i></div>
+                <h3 class="text-lg sm:text-xl font-bold mb-2 sm:mb-3 md:mb-4">Career Insights</h3>
+                <p class="text-sm sm:text-base text-gray-600 mb-4 sm:mb-5 md:mb-6">Market trends, salary data, and skill demand analysis for 15+ top technologies and job roles in 2024.</p>
+                <a href="/career_insights" class="inline-flex items-center justify-center w-full px-4 py-2.5 sm:py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg hover:from-indigo-600 hover:to-purple-700 transition transform hover:scale-105 shadow-md font-semibold text-sm sm:text-base ripple">
+                    <i class="fas fa-chart-bar mr-2"></i>
+                    View Insights
+                    <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-12 sm:py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16 px-4">How SmartCareer Works</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <!-- Step 1 -->
+            <div class="text-center hover-lift">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold scale-on-hover">
+                    1
+                </div>
+                <h3 class="text-base sm:text-lg font-bold mb-2">Register & Profile</h3>
+                <p class="text-sm sm:text-base text-gray-600 px-2">Create your account and complete your basic profile information securely.</p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="text-center hover-lift">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold scale-on-hover">
+                    2
+                </div>
+                <h3 class="text-base sm:text-lg font-bold mb-2">Take Quiz</h3>
+                <p class="text-sm sm:text-base text-gray-600 px-2">Answer 15 intelligent questions about your interests, skills, and personality.</p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="text-center hover-lift">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold scale-on-hover">
+                    3
+                </div>
+                <h3 class="text-base sm:text-lg font-bold mb-2">Get Results</h3>
+                <p class="text-sm sm:text-base text-gray-600 px-2">Receive personalized top 3 career matches with detailed analysis and salaries.</p>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="text-center hover-lift">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-lg sm:text-xl md:text-2xl font-bold scale-on-hover">
+                    4
+                </div>
+                <h3 class="text-base sm:text-lg font-bold mb-2">Learn & Grow</h3>
+                <p class="text-sm sm:text-base text-gray-600 px-2">Follow roadmaps and build your future career.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-12 sm:py-16 md:py-20 bg-gradient-to-r from-slate-50 to-blue-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 md:mb-16 px-4">Success Stories</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover-card">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 flex gap-1">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-sm sm:text-base text-gray-600 mb-4">"SmartCareer helped me discover Data Science as my true calling! The AI assessment was so accurate, and the college recommendations were spot-on. Now I'm at IIIT Hyderabad studying CS with AI/ML focus."</p>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full flex-shrink-0 pulse"></div>
+                    <div>
+                        <p class="text-sm sm:text-base font-bold text-gray-900">Priya Kumar</p>
+                        <p class="text-xs sm:text-sm text-gray-600">IIIT Hyderabad | Data Scientist Track</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover-card">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 flex gap-1">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-sm sm:text-base text-gray-600 mb-4">"The AI mentor feature is incredible! I could ask anything about AI/ML careers, interview prep, and resume building. The responses were so detailed and helpful. Highly recommended!"</p>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-400 to-teal-400 rounded-full flex-shrink-0 pulse"></div>
+                    <div>
+                        <p class="text-sm sm:text-base font-bold text-gray-900">Arjun Singh</p>
+                        <p class="text-xs sm:text-sm text-gray-600">IIT Bombay | AI Engineer</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl shadow-lg hover-card">
+                <div class="flex items-center mb-4">
+                    <div class="text-yellow-400 flex gap-1">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <p class="text-sm sm:text-base text-gray-600 mb-4">"Found my perfect college match and career path through SmartCareer. The salary insights and skill recommendations were exactly what I needed to make the right decision!"</p>
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex-shrink-0 pulse"></div>
+                    <div>
+                        <p class="text-sm sm:text-base font-bold text-gray-900">Ananya Patel</p>
+                        <p class="text-xs sm:text-sm text-gray-600">NIT Trichy | Software Developer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 text-white relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 px-4">Ready to Find Your Perfect Career?</h2>
+        <p class="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-blue-100 px-4">Join thousands of students discovering their ideal career path with SmartCareer's AI-powered guidance system.</p>
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <a href="/quiz" class="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-yellow-400 text-blue-900 font-bold rounded-lg hover:bg-yellow-300 transition transform hover:scale-105 text-sm sm:text-base">
+                Start Your Journey
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

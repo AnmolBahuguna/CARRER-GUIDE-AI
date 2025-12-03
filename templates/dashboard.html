@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SmartCareer{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="mb-12" data-aos="fade-down">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome to Your Dashboard</h1>
+            <p class="text-xl text-gray-600" id="userGreeting">Loading...</p>
+        </div>
+        
+        <!-- Statistics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <!-- Quizzes Taken -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="zoom-in">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-semibold mb-2">Quizzes Taken</p>
+                        <p class="text-4xl font-bold text-blue-600" id="quizzesTaken">0</p>
+                    </div>
+                    <i class="fas fa-clipboard text-4xl text-blue-200"></i>
+                </div>
+            </div>
+            
+            <!-- Matches Found -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="zoom-in" style="--aos-delay: 100ms;">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-semibold mb-2">Career Matches</p>
+                        <p class="text-4xl font-bold text-purple-600" id="matchesFound">0</p>
+                    </div>
+                    <i class="fas fa-bullseye text-4xl text-purple-200"></i>
+                </div>
+            </div>
+            
+            <!-- Last Quiz Date -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="zoom-in" style="--aos-delay: 200ms;">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-semibold mb-2">Account Created</p>
+                        <p class="text-lg font-bold text-green-600" id="joinedDate">Today</p>
+                    </div>
+                    <i class="fas fa-calendar text-4xl text-green-200"></i>
+                </div>
+            </div>
+            
+            <!-- Profile Completion -->
+            <div class="bg-white rounded-lg shadow-lg p-6" data-aos="zoom-in" style="--aos-delay: 300ms;">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm font-semibold mb-2">Profile Status</p>
+                        <p class="text-2xl font-bold text-orange-600">60%</p>
+                        <p class="text-xs text-gray-500">Complete profile</p>
+                    </div>
+                    <i class="fas fa-user text-4xl text-orange-200"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-lg p-8" data-aos="fade-up">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <a href="/quiz" class="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-lg hover:shadow-lg transition text-center group">
+                            <i class="fas fa-brain text-3xl text-blue-600 mb-2 group-hover:scale-110 transition inline-block"></i>
+                            <p class="font-semibold text-blue-900">Take Quiz</p>
+                            <p class="text-sm text-blue-700">Discover careers</p>
+                        </a>
+                        <a href="/college_finder" class="p-6 bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-lg hover:shadow-lg transition text-center group">
+                            <i class="fas fa-graduation-cap text-3xl text-green-600 mb-2 group-hover:scale-110 transition inline-block"></i>
+                            <p class="font-semibold text-green-900">Colleges</p>
+                            <p class="text-sm text-green-700">Find your fit</p>
+                        </a>
+                        <a href="/chatbot" class="p-6 bg-gradient-to-br from-purple-50 to-pink-100 border-2 border-purple-200 rounded-lg hover:shadow-lg transition text-center group">
+                            <i class="fas fa-comments text-3xl text-purple-600 mb-2 group-hover:scale-110 transition inline-block"></i>
+                            <p class="font-semibold text-purple-900">Chatbot</p>
+                            <p class="text-sm text-purple-700">Get guidance</p>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Recommended Resources -->
+                <div class="bg-white rounded-lg shadow-lg p-8" data-aos="fade-up">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Recommended Resources</h2>
+                    <div class="space-y-4">
+                        <a href="/career_insights" class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg hover:shadow-lg transition group">
+                            <div class="w-12 h-12 bg-blue-600 text-white rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-900">Career Insights 2024</p>
+                                <p class="text-sm text-gray-600">Market trends, salary data & skill demand</p>
+                            </div>
+                            <i class="fas fa-chevron-right text-gray-400 group-hover:text-blue-600 transition"></i>
+                        </a>
+                        <a href="/scholarships" class="flex items-center p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg hover:shadow-lg transition group">
+                            <div class="w-12 h-12 bg-green-600 text-white rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-900">Scholarships</p>
+                                <p class="text-sm text-gray-600">Government & private scholarship listings</p>
+                            </div>
+                            <i class="fas fa-chevron-right text-gray-400 group-hover:text-green-600 transition"></i>
+                        </a>
+                        <a href="/ai_ml_datascience" class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg hover:shadow-lg transition group">
+                            <div class="w-12 h-12 bg-purple-600 text-white rounded-lg flex items-center justify-center mr-4 group-hover:scale-110 transition">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-900">AI/ML Career Track</p>
+                                <p class="text-sm text-gray-600">Specialized path for AI/ML engineers</p>
+                            </div>
+                            <i class="fas fa-chevron-right text-gray-400 group-hover:text-purple-600 transition"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar -->
+            <div class="space-y-8">
+                <!-- Account Info -->
+                <div class="bg-white rounded-lg shadow-lg p-8" data-aos="fade-left">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Account Information</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Full Name</p>
+                            <p class="font-semibold text-gray-900" id="userName">Loading...</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600 mb-1">Email</p>
+                            <p class="font-semibold text-gray-900" id="userEmail">Loading...</p>
+                        </div>
+                        <div class="border-t pt-4 mt-4">
+                            <a href="/logout" class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-center font-semibold">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tips & Tricks -->
+                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-8" data-aos="fade-left" style="--aos-delay: 100ms;">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-lightbulb text-yellow-600"></i> Pro Tips
+                    </h3>
+                    <ul class="space-y-3 text-sm text-gray-700">
+                        <li class="flex gap-2">
+                            <span>✓</span>
+                            <span>Take the quiz honestly for best results</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span>✓</span>
+                            <span>Explore multiple colleges</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <span>✓</span>
+                            <span>Check market trends regularly</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('/api/user/stats');
+        if (response.ok) {
+            const data = await response.json();
+            
+            document.getElementById('userGreeting').textContent = `Welcome back, ${data.name}! 👋`;
+            document.getElementById('userName').textContent = data.name;
+            document.getElementById('userEmail').textContent = data.email;
+            document.getElementById('quizzesTaken').textContent = data.quizzes_taken;
+            document.getElementById('matchesFound').textContent = data.matches_found;
+            
+            const joinDate = new Date(data.joined);
+            document.getElementById('joinedDate').textContent = joinDate.toLocaleDateString();
+        }
+    } catch (error) {
+        console.error('Error loading user stats:', error);
+    }
+});
+</script>
+{% endblock %}

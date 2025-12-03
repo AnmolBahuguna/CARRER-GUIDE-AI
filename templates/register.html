@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Register - SmartCareer{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-purple-50">
+    <div class="max-w-md w-full space-y-8" data-aos="zoom-in">
+        <div class="text-center">
+            <i class="fas fa-brain text-5xl text-blue-600 mb-4 inline-block"></i>
+            <h2 class="text-4xl font-bold text-gray-900">SmartCareer</h2>
+            <p class="mt-2 text-gray-600">Create your account to get started</p>
+        </div>
+        
+        <form class="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-lg" id="registerForm">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400" placeholder="John Doe">
+            </div>
+            
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400" placeholder="you@example.com">
+            </div>
+            
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <input type="password" id="password" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400" placeholder="At least 6 characters">
+            </div>
+            
+            <div>
+                <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400" placeholder="Confirm your password">
+            </div>
+            
+            <div id="errorMessage" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg"></div>
+            
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">
+                Create Account
+            </button>
+            
+            <p class="text-center text-gray-600">
+                Already have an account? 
+                <a href="/login" class="text-blue-600 hover:text-blue-700 font-semibold">Login here</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password').value;
+    const errorDiv = document.getElementById('errorMessage');
+    
+    if (!name || !email || !password) {
+        errorDiv.textContent = 'All fields are required';
+        errorDiv.classList.remove('hidden');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match';
+        errorDiv.classList.remove('hidden');
+        return;
+    }
+    
+    if (password.length < 6) {
+        errorDiv.textContent = 'Password must be at least 6 characters';
+        errorDiv.classList.remove('hidden');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name, email, password})
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert('Registration successful! Redirecting to login...');
+            window.location.href = '/login';
+        } else {
+            errorDiv.textContent = data.error || 'Registration failed';
+            errorDiv.classList.remove('hidden');
+        }
+    } catch (error) {
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.remove('hidden');
+    }
+});
+</script>
+{% endblock %}

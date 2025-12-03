@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Career Insights - SmartCareer{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-8 sm:mb-12" data-aos="fade-down">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">2025 Career & Skills Insights</h1>
+            <p class="text-base sm:text-xl text-gray-600 px-4">Market trends, salary data, and skill demand analysis</p>
+        </div>
+        
+        <div class="grid grid-cols-1 gap-8 mb-12">
+            <!-- Skills Grid -->
+            <div id="skillsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Skills will load here -->
+            </div>
+        </div>
+        
+        <!-- Top Growing Skills -->
+        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8" data-aos="fade-up">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Top 10 Growing Skills (YoY Growth)</h2>
+            <div id="growthSkillsContainer" class="space-y-4">
+                <!-- Growth skills will load here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('/api/skills');
+        if (response.ok) {
+            const skills = await response.json();
+            const container = document.getElementById('skillsContainer');
+            
+            Object.entries(skills).forEach(([skillName, data], index) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition';
+                card.setAttribute('data-aos', 'fade-up');
+                card.style.setProperty('--aos-delay', `${index * 50}ms`);
+                
+                const demandColor = data.demand > 90 ? 'text-green-600' : data.demand > 80 ? 'text-blue-600' : 'text-orange-600';
+                
+                card.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">${skillName}</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <p class="text-xs text-gray-600">Demand</p>
+                                <p class="text-base font-bold ${demandColor}">${data.demand}%</p>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${data.demand}%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Salary Range</p>
+                            <p class="text-base font-bold text-green-600">₹${data.salary_min}-${data.salary_max} LPA</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Growth Rate</p>
+                            <p class="text-base font-bold text-purple-600">+${data.growth_rate}% YoY</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Difficulty Level</p>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">${data.difficulty}</span>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Sort by growth rate and display top 10
+            const skillsArray = Object.entries(skills).sort((a, b) => b[1].growth_rate - a[1].growth_rate).slice(0, 10);
+            const growthContainer = document.getElementById('growthSkillsContainer');
+            
+            skillsArray.forEach(([skillName, data], index) => {
+                const progressDiv = document.createElement('div');
+                progressDiv.className = 'flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg';
+                
+                progressDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">${index + 1}</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-semibold text-gray-900 text-sm truncate">${skillName}</p>
+                        <p class="text-xs text-gray-600">Growth: ${data.growth_rate}% YoY</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-base font-bold text-green-600">+${data.growth_rate}%</p>
+                        <p class="text-xs text-gray-600">₹${data.salary_min}-${data.salary_max} LPA</p>
+                    </div>
+                `;
+                
+                growthContainer.appendChild(progressDiv);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading skills:', error);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Career Assessment Quiz - SmartCareer{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Progress Bar -->
+        <div class="mb-6 sm:mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-4">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Career Assessment Quiz</h1>
+                <div class="text-right">
+                    <p id="questionCount" class="text-base sm:text-lg font-semibold text-blue-600">Question 1 of 15</p>
+                </div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 sm:h-3">
+                <div id="progressBar" class="bg-blue-600 h-2 sm:h-3 rounded-full transition-all duration-300 w-[6.67%]"></div>
+            </div>
+        </div>
+        
+        <!-- Quiz Container -->
+        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+            <div id="quizContent">
+                <!-- Questions will be loaded here -->
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 justify-between">
+                <button id="prevBtn" onclick="previousQuestion()" class="px-4 py-2 sm:px-6 sm:py-3 bg-gray-300 text-gray-800 font-bold rounded-lg hover:bg-gray-400 transition disabled:opacity-50 text-sm sm:text-base" style="display: none;">
+                    ← Previous
+                </button>
+                <button id="nextBtn" onclick="nextQuestion()" class="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">
+                    Next →
+                </button>
+                <button id="submitBtn" onclick="submitQuiz()" class="px-6 py-2 sm:px-8 sm:py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition text-sm sm:text-base" style="display: none;">
+                    Submit Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>
+<script>
+// Quiz Questions Data
+const quizQuestions = [
+    {
+        id: 'q1',
+        question: 'What type of work excites you the most?',
+        options: [
+            { value: 'building_tech', label: '🏗️ Building technology solutions' },
+            { value: 'analyzing_data', label: '📊 Analyzing data and patterns' },
+            { value: 'creating_visual', label: '🎨 Creating visual designs' },
+            { value: 'communicating', label: '💬 Communicating and marketing' }
+        ]
+    },
+    {
+        id: 'q2',
+        question: 'Which skill would you like to develop?',
+        options: [
+            { value: 'programming', label: '💻 Programming & coding' },
+            { value: 'data_analytics', label: '📈 Data analytics' },
+            { value: 'creative_design', label: '🎭 Creative design' },
+            { value: 'cybersecurity', label: '🔒 Cybersecurity' }
+        ]
+    },
+    {
+        id: 'q3',
+        question: 'What\'s your preferred work environment?',
+        options: [
+            { value: 'remote', label: '🏠 Remote with flexible hours' },
+            { value: 'office', label: '🏢 Office with team collaboration' },
+            { value: 'hybrid', label: '🔄 Hybrid model' },
+            { value: 'freelance', label: '🚀 Freelance/entrepreneurial' }
+        ]
+    },
+    {
+        id: 'q4',
+        question: 'Which subjects interest you most?',
+        options: [
+            { value: 'mathematics', label: '📐 Mathematics & Logic' },
+            { value: 'science_tech', label: '🔬 Science & Technology' },
+            { value: 'arts_design', label: '🖼️ Arts & Design' },
+            { value: 'business', label: '💼 Business & Communication' }
+        ]
+    },
+    {
+        id: 'q5',
+        question: 'Do you prefer working alone or in teams?',
+        options: [
+            { value: 'alone', label: '👤 Working independently' },
+            { value: 'team', label: '👥 Collaborating with teams' },
+            { value: 'both', label: '⚖️ Both equally' },
+            { value: 'lead', label: '👔 Leading teams' }
+        ]
+    },
+    {
+        id: 'q6',
+        question: 'How important is salary in your career decision?',
+        options: [
+            { value: 'very', label: '💰 Very important - high salary priority' },
+            { value: 'moderate', label: '💵 Moderate - balanced importance' },
+            { value: 'low', label: '⭐ Low - passion over salary' },
+            { value: 'not', label: '❤️ Not important - purpose driven' }
+        ]
+    },
+    {
+        id: 'q7',
+        question: 'What\'s your learning style?',
+        options: [
+            { value: 'practical', label: '🛠️ Learning by doing (practical)' },
+            { value: 'theoretical', label: '📚 Learning theory first' },
+            { value: 'mixed', label: '🔄 Mix of both' },
+            { value: 'self', label: '🎓 Self-paced learning' }
+        ]
+    },
+    {
+        id: 'q8',
+        question: 'How do you handle challenges and problems?',
+        options: [
+            { value: 'analytical', label: '🔍 Analyze deeply' },
+            { value: 'creative', label: '💡 Think creatively' },
+            { value: 'systematic', label: '📋 Follow systematic approaches' },
+            { value: 'collaborative', label: '🤝 Discuss with others' }
+        ]
+    },
+    {
+        id: 'q9',
+        question: 'What\'s your risk tolerance?',
+        options: [
+            { value: 'low', label: '🛡️ Low risk - stable jobs' },
+            { value: 'moderate', label: '⚠️ Moderate risk - growth opportunities' },
+            { value: 'high', label: '🎢 High risk - startup/entrepreneurship' },
+            { value: 'varies', label: '🎯 Depends on situation' }
+        ]
+    },
+    {
+        id: 'q10',
+        question: 'How interested are you in AI and Machine Learning?',
+        options: [
+            { value: 'very', label: '🤖 Very interested - want to specialize' },
+            { value: 'interested', label: '😊 Interested - want to learn' },
+            { value: 'neutral', label: '😐 Neutral - open to it' },
+            { value: 'not', label: '❌ Not interested' }
+        ]
+    },
+    {
+        id: 'q11',
+        question: 'What\'s your career timeline expectation?',
+        options: [
+            { value: 'quick', label: '⚡ Quick success (1-2 years)' },
+            { value: 'medium', label: '🎯 Medium-term (3-5 years)' },
+            { value: 'long', label: '🚀 Long-term growth (5+ years)' },
+            { value: 'flexible', label: '🔄 Flexible and adaptive' }
+        ]
+    },
+    {
+        id: 'q12',
+        question: 'What\'s your preferred industry sector?',
+        options: [
+            { value: 'tech', label: '💻 Technology' },
+            { value: 'finance', label: '💳 Finance & Banking' },
+            { value: 'healthcare', label: '⚕️ Healthcare' },
+            { value: 'education', label: '📖 Education & Research' }
+        ]
+    },
+    {
+        id: 'q13',
+        question: 'How important is work-life balance?',
+        options: [
+            { value: 'critical', label: '⚖️ Critical - must have' },
+            { value: 'important', label: '⭐ Important but flexible' },
+            { value: 'secondary', label: '💼 Secondary to career growth' },
+            { value: 'willing', label: '🔥 Willing to sacrifice for success' }
+        ]
+    },
+    {
+        id: 'q14',
+        question: 'What motivates you most?',
+        options: [
+            { value: 'innovation', label: '💡 Innovation & solving problems' },
+            { value: 'growth', label: '📈 Career growth & advancement' },
+            { value: 'impact', label: '🌍 Making positive impact' },
+            { value: 'security', label: '🏠 Financial security' }
+        ]
+    },
+    {
+        id: 'q15',
+        question: 'What\'s your biggest strength?',
+        options: [
+            { value: 'technical', label: '⚙️ Technical skills' },
+            { value: 'communication', label: '🗣️ Communication skills' },
+            { value: 'leadership', label: '👑 Leadership abilities' },
+            { value: 'creativity', label: '🎨 Creativity & innovation' }
+        ]
+    }
+];
+
+let currentQuestion = 0;
+let answers = {};
+
+function initQuiz() {
+    renderQuestion();
+    updateNavButtons();
+}
+
+function renderQuestion() {
+    const question = quizQuestions[currentQuestion];
+    const html = `
+        <h2 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-gray-900">${question.question}</h2>
+        <div class="space-y-3 sm:space-y-4" id="optionsContainer">
+            ${question.options.map(option => `
+                <label class="flex items-center p-3 sm:p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-blue-600 hover:bg-blue-50 transition" style="background-color: ${answers[question.id] === option.value ? '#EBF8FF' : 'white'}; border-color: ${answers[question.id] === option.value ? '#3B82F6' : '#D1D5DB'};">
+                    <input type="radio" name="${question.id}" value="${option.value}" ${answers[question.id] === option.value ? 'checked' : ''} onchange="selectOption('${question.id}', '${option.value}')" class="w-4 h-4 text-blue-600">
+                    <span class="ml-3 sm:ml-4 text-base sm:text-lg text-gray-700">${option.label}</span>
+                </label>
+            `).join('')}
+        </div>
+    `;
+    document.getElementById('quizContent').innerHTML = html;
+    updateProgress();
+}
+
+function selectOption(questionId, value) {
+    answers[questionId] = value;
+    renderQuestion();
+}
+
+function nextQuestion() {
+    if (currentQuestion < quizQuestions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+        updateNavButtons();
+        window.scrollTo(0, 0);
+    }
+}
+
+function previousQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+        updateNavButtons();
+        window.scrollTo(0, 0);
+    }
+}
+
+function updateNavButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+    
+    if (currentQuestion === quizQuestions.length - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'block';
+    } else {
+        nextBtn.style.display = 'block';
+        submitBtn.style.display = 'none';
+    }
+}
+
+function updateProgress() {
+    const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    document.getElementById('questionCount').textContent = `Question ${currentQuestion + 1} of ${quizQuestions.length}`;
+}
+
+async function submitQuiz() {
+    // Check if all questions answered
+    if (Object.keys(answers).length < quizQuestions.length) {
+        alert('Please answer all questions before submitting');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/submit_quiz', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({answers})
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            // Store results in session storage for results page
+            sessionStorage.setItem('quizResults', JSON.stringify(data));
+            window.location.href = '/results';
+        } else {
+            alert('Failed to submit quiz');
+        }
+    } catch (error) {
+        alert('An error occurred. Please try again.');
+    }
+}
+
+// Initialize quiz on page load
+initQuiz();
+</script>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz Results - SmartCareer{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8 sm:mb-12" data-aos="fade-down">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">Your Career Matches</h1>
+            <p class="text-base sm:text-xl text-gray-600 px-2">Based on your responses, here are your top 3 career recommendations</p>
+        </div>
+        
+        <!-- Results Container -->
+        <div id="resultsContainer" class="space-y-8">
+            <!-- Results will be loaded here -->
+        </div>
+        
+        <!-- Chart Section -->
+        <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 mt-8 sm:mt-12" data-aos="fade-up">
+            <h2 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-gray-900">Match Percentage Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                <div>
+                    <canvas id="matchChart"></canvas>
+                </div>
+                <div id="matchDetails" class="space-y-3 sm:space-y-4">
+                    <!-- Details will be populated -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mt-8 sm:mt-12">
+            <a href="/college_finder" class="px-4 py-3 sm:px-8 sm:py-4 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition text-center text-sm sm:text-base">
+                Explore Colleges
+            </a>
+            <a href="/career_insights" class="px-4 py-3 sm:px-8 sm:py-4 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition text-center text-sm sm:text-base">
+                View Career Insights
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load results from session storage
+document.addEventListener('DOMContentLoaded', function() {
+    const resultsData = JSON.parse(sessionStorage.getItem('quizResults') || '{}');
+    
+    if (!resultsData.top_careers || resultsData.top_careers.length === 0) {
+        document.getElementById('resultsContainer').innerHTML = '<p class="text-center text-gray-600">No results found. Please take the quiz again.</p>';
+        return;
+    }
+    
+    // Render career cards
+    const container = document.getElementById('resultsContainer');
+    resultsData.top_careers.forEach((career, index) => {
+        const colors = ['from-blue-500 to-blue-600', 'from-purple-500 to-purple-600', 'from-green-500 to-green-600'];
+        const medals = ['🥇', '🥈', '🥉'];
+        
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition transform hover:-translate-y-2';
+        card.setAttribute('data-aos', 'fade-up');
+        card.style.setProperty('--aos-delay', `${index * 100}ms`);
+        
+        card.innerHTML = `
+            <div class="bg-gradient-to-r ${colors[index]} text-white p-4 sm:p-6 md:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-bold">${medals[index]} ${career.name}</h2>
+                        <p class="text-base sm:text-lg opacity-90 mt-2">${career.description}</p>
+                    </div>
+                    <div class="text-4xl sm:text-6xl font-bold opacity-20">${career.score}%</div>
+                </div>
+            </div>
+            
+            <div class="p-4 sm:p-6 md:p-8">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+                    <div class="bg-gray-50 p-4 sm:p-6 rounded-lg">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">Salary Range</p>
+                        <p class="text-xl sm:text-2xl font-bold text-blue-600">${career.salary}</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 sm:p-6 rounded-lg">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">Match Score</p>
+                        <p class="text-xl sm:text-2xl font-bold text-purple-600">${career.score}%</p>
+                    </div>
+                    <div class="bg-gray-50 p-4 sm:p-6 rounded-lg">
+                        <p class="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">Demand</p>
+                        <p class="text-xl sm:text-2xl font-bold text-green-600">Very High</p>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-3">Required Skills</h3>
+                    <div class="flex flex-wrap gap-2">
+                        ${career.skills.map(skill => `
+                            <span class="px-3 py-1 sm:px-4 sm:py-2 bg-blue-100 text-blue-800 rounded-full text-xs sm:text-sm font-semibold">${skill}</span>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <a href="/roadmap/${career.name.replace(/\s+/g, '_')}" class="inline-block w-full sm:w-auto text-center px-4 py-2 sm:px-6 sm:py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition text-sm sm:text-base">
+                    View Learning Roadmap →
+                </a>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+    
+    // Create chart
+    const chartLabels = resultsData.top_careers.map(c => c.name);
+    const chartData = resultsData.top_careers.map(c => c.score);
+    const chartColors = ['#3B82F6', '#A855F7', '#10B981'];
+    
+    const ctx = document.getElementById('matchChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                data: chartData,
+                backgroundColor: chartColors,
+                borderColor: '#ffffff',
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 14, weight: 'bold' },
+                        padding: 20
+                    }
+                }
+            }
+        }
+    });
+    
+    // Populate match details
+    const details = document.getElementById('matchDetails');
+    resultsData.top_careers.forEach((career, index) => {
+        const detail = document.createElement('div');
+        detail.className = 'flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 rounded-lg';
+        detail.innerHTML = `
+            <div class="w-2 h-2 sm:w-3 sm:h-3 rounded-full" style="background-color: ${['#3B82F6', '#A855F7', '#10B981'][index]}"></div>
+            <div class="flex-1 min-w-0">
+                <p class="font-semibold text-gray-900 text-sm sm:text-base truncate">${career.name}</p>
+                <p class="text-xs sm:text-sm text-gray-600">${career.score}% Match</p>
+            </div>
+            <div class="text-base sm:text-2xl font-bold text-gray-400">${career.score}%</div>
+        `;
+        details.appendChild(detail);
+    });
+});
+</script>
+{% endblock %}

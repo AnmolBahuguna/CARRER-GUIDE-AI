@@ -1,0 +1,688 @@
+{% extends "base.html" %}
+
+{% block title %}Career Growth Roadmap - SmartCareer{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Career Roadmap 3D Styles */
+    .roadmap-container {
+        position: relative;
+        padding: 4rem 0;
+        min-height: 100vh;
+        background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+    }
+
+    .roadmap-timeline {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Vertical Timeline Line */
+    .timeline-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #f59e0b, #10b981, #ef4444);
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+
+    .timeline-line-progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 0%;
+        background: linear-gradient(to bottom, #10b981, #14b8a6);
+        transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Roadmap Stage Cards */
+    .roadmap-stage {
+        position: relative;
+        margin-bottom: 6rem;
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .roadmap-stage.animate-in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .roadmap-stage-card {
+        position: relative;
+        width: 45%;
+        background: white;
+        border-radius: 1.5rem;
+        padding: 2.5rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        transform-style: preserve-3d;
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        cursor: pointer;
+    }
+
+    .roadmap-stage:nth-child(odd) .roadmap-stage-card {
+        margin-left: auto;
+    }
+
+    .roadmap-stage:nth-child(even) .roadmap-stage-card {
+        margin-right: auto;
+    }
+
+    .roadmap-stage-card:hover {
+        transform: translateY(-15px) translateZ(30px) rotateX(2deg) rotateY(2deg);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Stage Icon */
+    .stage-icon {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%) translateY(-50%);
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        z-index: 10;
+        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+    }
+
+    .roadmap-stage-card:hover .stage-icon {
+        transform: translateX(-50%) translateY(-50%) translateZ(20px) scale(1.1) rotateY(360deg);
+        box-shadow: 0 15px 40px rgba(59, 130, 246, 0.6);
+    }
+
+    /* Stage Number Badge */
+    .stage-number {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.25rem;
+        color: white;
+        box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+        z-index: 5;
+    }
+
+    /* Stage Content */
+    .stage-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+        margin-top: 2rem;
+    }
+
+    .stage-duration {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+    }
+
+    .stage-description {
+        color: #4b5563;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+    }
+
+    /* Skills Tags */
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .skill-tag {
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, #e0e7ff, #ddd6fe);
+        color: #4c1d95;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        transform: translateZ(0);
+    }
+
+    .skill-tag:hover {
+        transform: translateY(-3px) translateZ(10px) scale(1.05);
+        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Responsibilities List */
+    .responsibilities-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .responsibilities-list li {
+        padding: 0.75rem 0;
+        padding-left: 1.75rem;
+        position: relative;
+        color: #374151;
+        line-height: 1.6;
+        transition: all 0.3s;
+    }
+
+    .responsibilities-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #10b981;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+    .responsibilities-list li:hover {
+        transform: translateX(5px);
+        color: #1f2937;
+    }
+
+    /* Connecting Line Animation */
+    .connecting-line {
+        position: absolute;
+        left: 50%;
+        width: 2px;
+        background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+        transform: translateX(-50%);
+        z-index: 2;
+        height: 0;
+        transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .roadmap-stage.animate-in .connecting-line {
+        height: 6rem;
+    }
+
+    /* Stage Color Variants */
+    .stage-entry .stage-icon {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .stage-mid .stage-icon {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+
+    .stage-senior .stage-icon {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .stage-lead .stage-icon {
+        background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .stage-manager .stage-icon {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    /* Progress Indicator */
+    .progress-indicator {
+        position: fixed;
+        top: 80px;
+        right: 2rem;
+        background: white;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        min-width: 200px;
+    }
+
+    .progress-title {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .progress-bar-container {
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f59e0b, #10b981, #ef4444);
+        width: 0%;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .progress-percentage {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #3b82f6;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .timeline-line {
+            left: 2rem;
+        }
+
+        .roadmap-stage-card {
+            width: calc(100% - 4rem);
+            margin-left: 4rem !important;
+            margin-right: 0 !important;
+        }
+
+        .stage-icon {
+            left: 2rem;
+        }
+
+        .connecting-line {
+            left: 2rem;
+        }
+
+        .progress-indicator {
+            position: relative;
+            top: 0;
+            right: 0;
+            margin: 2rem auto;
+            max-width: 300px;
+        }
+    }
+
+    /* Floating Animation for Icons */
+    @keyframes float-icon {
+        0%, 100% {
+            transform: translateX(-50%) translateY(-50%) translateZ(0) rotateY(0deg);
+        }
+        50% {
+            transform: translateX(-50%) translateY(-60%) translateZ(10px) rotateY(180deg);
+        }
+    }
+
+    .stage-icon {
+        animation: float-icon 3s ease-in-out infinite;
+    }
+
+    .roadmap-stage:nth-child(2) .stage-icon {
+        animation-delay: 0.2s;
+    }
+
+    .roadmap-stage:nth-child(3) .stage-icon {
+        animation-delay: 0.4s;
+    }
+
+    .roadmap-stage:nth-child(4) .stage-icon {
+        animation-delay: 0.6s;
+    }
+
+    .roadmap-stage:nth-child(5) .stage-icon {
+        animation-delay: 0.8s;
+    }
+
+    /* Glow Effect on Active Stage */
+    .roadmap-stage.active .roadmap-stage-card {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        border: 2px solid #3b82f6;
+    }
+
+    /* Section Header */
+    .roadmap-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .roadmap-header.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .roadmap-title {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+
+    .roadmap-subtitle {
+        font-size: 1.25rem;
+        color: #6b7280;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="roadmap-container">
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <div class="progress-title">Career Progress</div>
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+        <div class="progress-percentage" id="progressPercentage">0%</div>
+    </div>
+
+    <div class="roadmap-timeline">
+        <!-- Timeline Line -->
+        <div class="timeline-line">
+            <div class="timeline-line-progress" id="timelineProgress"></div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="roadmap-header" data-animate="fade-up" data-delay="0">
+            <h1 class="roadmap-title">Career Growth Roadmap</h1>
+            <p class="roadmap-subtitle">Chart your path to success in tech - from entry-level to leadership</p>
+        </div>
+
+        <!-- Career Stages -->
+        <div id="roadmapStages">
+            <!-- Stage 1: Entry Level -->
+            <div class="roadmap-stage stage-entry" data-stage="1">
+                <div class="connecting-line"></div>
+                <div class="stage-icon">
+                    <i class="fas fa-seedling"></i>
+                </div>
+                <div class="roadmap-stage-card" data-3d-card>
+                    <div class="stage-number">1</div>
+                    <h2 class="stage-title">Junior/Entry Level</h2>
+                    <div class="stage-duration">0-2 Years Experience</div>
+                    <p class="stage-description">
+                        Start your journey with foundational skills and hands-on experience. Focus on learning core technologies, best practices, and building your first projects.
+                    </p>
+                    
+                    <div class="skills-container">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">HTML/CSS</span>
+                    </div>
+
+                    <h3 class="font-semibold text-gray-900 mb-3">Key Responsibilities:</h3>
+                    <ul class="responsibilities-list">
+                        <li>Write clean, maintainable code following best practices</li>
+                        <li>Participate in code reviews and learn from feedback</li>
+                        <li>Fix bugs and implement small features</li>
+                        <li>Collaborate with team members on projects</li>
+                        <li>Learn and adapt to new technologies quickly</li>
+                    </ul>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Salary Range:</span>
+                            <span class="font-semibold text-gray-900">₹5-12 LPA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2: Mid-Level -->
+            <div class="roadmap-stage stage-mid" data-stage="2">
+                <div class="connecting-line"></div>
+                <div class="stage-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="roadmap-stage-card" data-3d-card>
+                    <div class="stage-number">2</div>
+                    <h2 class="stage-title">Mid-Level Developer</h2>
+                    <div class="stage-duration">2-4 Years Experience</div>
+                    <p class="stage-description">
+                        Take on more complex challenges, lead small features, and mentor junior developers. Build expertise in specific domains and contribute to architectural decisions.
+                    </p>
+                    
+                    <div class="skills-container">
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">System Design</span>
+                        <span class="skill-tag">Testing</span>
+                    </div>
+
+                    <h3 class="font-semibold text-gray-900 mb-3">Key Responsibilities:</h3>
+                    <ul class="responsibilities-list">
+                        <li>Design and implement complex features independently</li>
+                        <li>Mentor junior developers and conduct code reviews</li>
+                        <li>Participate in technical decision-making</li>
+                        <li>Optimize application performance and scalability</li>
+                        <li>Contribute to architecture and design discussions</li>
+                    </ul>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Salary Range:</span>
+                            <span class="font-semibold text-gray-900">₹12-25 LPA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 3: Senior Level -->
+            <div class="roadmap-stage stage-senior" data-stage="3">
+                <div class="connecting-line"></div>
+                <div class="stage-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="roadmap-stage-card" data-3d-card>
+                    <div class="stage-number">3</div>
+                    <h2 class="stage-title">Senior Developer</h2>
+                    <div class="stage-duration">4-6 Years Experience</div>
+                    <p class="stage-description">
+                        Drive technical excellence, lead major initiatives, and make critical architectural decisions. Become a go-to expert in your domain.
+                    </p>
+                    
+                    <div class="skills-container">
+                        <span class="skill-tag">Microservices</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Performance</span>
+                        <span class="skill-tag">Leadership</span>
+                    </div>
+
+                    <h3 class="font-semibold text-gray-900 mb-3">Key Responsibilities:</h3>
+                    <ul class="responsibilities-list">
+                        <li>Lead major technical initiatives and projects</li>
+                        <li>Design scalable and maintainable system architectures</li>
+                        <li>Make critical technical decisions and trade-offs</li>
+                        <li>Mentor mid-level and junior developers</li>
+                        <li>Drive best practices and technical standards</li>
+                    </ul>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Salary Range:</span>
+                            <span class="font-semibold text-gray-900">₹25-40 LPA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 4: Lead/Principal -->
+            <div class="roadmap-stage stage-lead" data-stage="4">
+                <div class="connecting-line"></div>
+                <div class="stage-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="roadmap-stage-card" data-3d-card>
+                    <div class="stage-number">4</div>
+                    <h2 class="stage-title">Lead/Principal Engineer</h2>
+                    <div class="stage-duration">6-8 Years Experience</div>
+                    <p class="stage-description">
+                        Shape the technical direction of products, lead multiple teams, and drive innovation. Focus on strategic technical decisions and organizational impact.
+                    </p>
+                    
+                    <div class="skills-container">
+                        <span class="skill-tag">Architecture</span>
+                        <span class="skill-tag">Strategy</span>
+                        <span class="skill-tag">Innovation</span>
+                        <span class="skill-tag">Multi-team</span>
+                        <span class="skill-tag">Research</span>
+                    </div>
+
+                    <h3 class="font-semibold text-gray-900 mb-3">Key Responsibilities:</h3>
+                    <ul class="responsibilities-list">
+                        <li>Define technical vision and strategy for products</li>
+                        <li>Lead multiple engineering teams and initiatives</li>
+                        <li>Drive innovation and research new technologies</li>
+                        <li>Influence technical decisions across the organization</li>
+                        <li>Represent engineering in executive discussions</li>
+                    </ul>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Salary Range:</span>
+                            <span class="font-semibold text-gray-900">₹40-70 LPA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 5: Manager/Architect -->
+            <div class="roadmap-stage stage-manager" data-stage="5">
+                <div class="stage-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="roadmap-stage-card" data-3d-card>
+                    <div class="stage-number">5</div>
+                    <h2 class="stage-title">Manager/Architect</h2>
+                    <div class="stage-duration">8+ Years Experience</div>
+                    <p class="stage-description">
+                        Lead at the highest level, manage engineering organizations, and drive business impact through technology. Balance technical excellence with business strategy.
+                    </p>
+                    
+                    <div class="skills-container">
+                        <span class="skill-tag">Leadership</span>
+                        <span class="skill-tag">Strategy</span>
+                        <span class="skill-tag">Business</span>
+                        <span class="skill-tag">Organization</span>
+                        <span class="skill-tag">Vision</span>
+                    </div>
+
+                    <h3 class="font-semibold text-gray-900 mb-3">Key Responsibilities:</h3>
+                    <ul class="responsibilities-list">
+                        <li>Lead large engineering organizations and teams</li>
+                        <li>Drive business strategy through technology</li>
+                        <li>Build and scale engineering culture</li>
+                        <li>Make critical business and technical decisions</li>
+                        <li>Mentor future leaders and architects</li>
+                    </ul>
+
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600">Salary Range:</span>
+                            <span class="font-semibold text-gray-900">₹70+ LPA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize scroll animations
+    const stages = document.querySelectorAll('.roadmap-stage');
+    const header = document.querySelector('.roadmap-header');
+    
+    // Animate header
+    setTimeout(() => {
+        header.classList.add('animate-in');
+    }, 100);
+
+    // Intersection Observer for stages
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.2
+    };
+
+    const stageObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('animate-in');
+                    updateProgress();
+                }, index * 150);
+                stageObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    stages.forEach(stage => {
+        stageObserver.observe(stage);
+    });
+
+    // Update progress indicator
+    function updateProgress() {
+        const visibleStages = document.querySelectorAll('.roadmap-stage.animate-in').length;
+        const totalStages = stages.length;
+        const progress = (visibleStages / totalStages) * 100;
+        
+        document.getElementById('progressBar').style.width = progress + '%';
+        document.getElementById('progressPercentage').textContent = Math.round(progress) + '%';
+        document.getElementById('timelineProgress').style.height = progress + '%';
+    }
+
+    // 3D tilt effect on cards
+    stages.forEach(stage => {
+        const card = stage.querySelector('.roadmap-stage-card');
+        if (card) {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `translateY(-15px) translateZ(30px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        }
+    });
+
+    // Smooth scroll to stage on click
+    stages.forEach(stage => {
+        stage.addEventListener('click', () => {
+            stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    });
+});
+</script>
+{% endblock %}
