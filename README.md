@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SmartCareer - AI-Powered Career Guidance Platform
 
 An intelligent, production-ready web application that helps students and professionals discover ideal career paths through AI-powered assessments, personalized roadmaps, intelligent career counseling, and interactive 3D visualizations.
@@ -706,3 +707,7 @@ For issues, questions, or suggestions:
 **Status**: Production Ready ✅  
 **Python Version**: 3.8+  
 **Flask Version**: 2.3.3
+=======
+# CARRER-GUIDEDANCE-WITH-AI
+Smart Career Guidance is a responsive website that helps students explore courses, take career quizzes, and discover future opportunities. It features a mobile-friendly UI, interactive sidebar, contact form, and links to resources like YouTube, blogs, and social media.
+>>>>>>> f87257a968a74d985f238ac6e6a0dab8ec22f9da
