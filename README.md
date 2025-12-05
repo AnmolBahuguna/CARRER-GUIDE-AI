@@ -125,24 +125,7 @@ cd "mini project"
 ```
 
 ### Step 2: Create Virtual Environment
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# macOS/Linux
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### Step 3: Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 4: Configure Environment Variables
+onment Variables
 
 1. Create a `.env` file in the project root:
 
@@ -457,42 +440,7 @@ chat_history = {
 
 ## 🔧 Configuration
 
-### Flask Settings
 
-```python
-# app.py
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-secret-key')
-app.run(debug=True, host='127.0.0.1', port=5000)
-```
-
-### Environment Variables
-
-```env
-FLASK_SECRET_KEY=your_secret_key_here
-FLASK_DEBUG=True
-FLASK_ENV=development
-OPENROUTER_API_KEY=your_api_key_here
-```
-
-## 📝 Usage Examples
-
-### 1. User Registration & Login
-```
-1. Click "Register" on homepage
-2. Enter name, email, password (min 6 characters)
-3. Confirm registration
-4. Login with credentials
-5. Access protected features (quiz, dashboard)
-```
-
-### 2. Take Career Quiz
-```
-1. Click "Career Quiz" from navigation
-2. Answer 15 questions honestly
-3. Submit for instant results
-4. View top 3 career matches with scores
-5. Explore recommended career paths
-```
 
 ### 3. Chat with AI Career Counselor
 ```
